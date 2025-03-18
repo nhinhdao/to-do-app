@@ -20,15 +20,15 @@
                 color: white;
             }
 
-            &.To-do label {
+            &.todo label {
                 background-color: var(--mantine-color-gray-5);
             }
 
-            &.Doing label {
+            &.doing label {
                 background-color: var(--mantine-color-blue-6);
             }
 
-            &.Done label {
+            &.done label {
                 background-color: var(--mantine-color-green-9);
             }
         }

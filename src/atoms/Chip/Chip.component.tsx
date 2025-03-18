@@ -1,4 +1,5 @@
 import {Chip} from "@mantine/core";
+import {formatStatus} from "../../utils/helpers.ts";
 
 interface ChipItemProps {
     checked: boolean;
@@ -15,7 +16,7 @@ const ChipItem = (props: ChipItemProps) => {
             className={`chip ${value}`}
             checked={checked}
             onChange={handleClick}>
-            {value}
+            {formatStatus(value)}
         </Chip>
     );
 };

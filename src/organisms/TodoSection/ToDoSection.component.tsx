@@ -4,16 +4,16 @@ import {DragDropContext, DropResult} from "@hello-pangea/dnd";
 import {useListState} from "@mantine/hooks";
 import DraggableItem from "../../organisms/Draggable/DraggableItem.component.tsx";
 import DroppableZone from "../../organisms/Droppable/DroppableZone.component.tsx";
-import {reorderItems, setTodosState} from "../../utils/helpers.ts";
+import {formatStatus, reorderItems, setTodosByStatus} from "../../utils/helpers.ts";
 
 interface ToDoSectionProps {
-    type: string;
+    status: string;
     items: Todo[];
     handleEditTask: (task: Todo) => void;
     handleDeleteTask: (task: Todo) => void;
 }
 
-const ToDoSection = ({type, items, handleEditTask, handleDeleteTask}: ToDoSectionProps) => {
+const ToDoSection = ({status, items, handleEditTask, handleDeleteTask}: ToDoSectionProps) => {
     const [data, handlers] = useListState(items);
 
     const onDragEnd = ({destination, source}: DropResult) => {
@@ -21,17 +21,15 @@ const ToDoSection = ({type, items, handleEditTask, handleDeleteTask}: ToDoSectio
         const destinationIndex = destination?.index || 0;
 
         const orderedTodos = reorderItems(items, sourceIndex, destinationIndex);
-        console.log(items);
-        console.log(orderedTodos)
-        // setTodosState(orderedTodos);
+        setTodosByStatus(status, orderedTodos);
         return handlers.reorder({from: source.index, to: destination?.index || 0});
     };
 
     return (
         <div className="todo-section">
             <DragDropContext onDragEnd={onDragEnd}>
-                <DroppableZone type={type}>
-                    <p className="todo-section-header">{type.replace(/-/g, " ")}: {items.length}</p>
+                <DroppableZone type={status}>
+                    <p className="todo-section-header">{formatStatus(status)}: {items.length}</p>
                     {data.map((item: Todo, index: number) => (
                         <DraggableItem key={item.id} item={item} index={index}>
                             <ToDoCard

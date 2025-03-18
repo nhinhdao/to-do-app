@@ -1,9 +1,15 @@
 import {createContext, Dispatch, useMemo, useReducer} from "react";
-import {Action, ChildrenProps, Todo} from "../../atoms/Constants/Interfaces.ts";
+import {Action, ChildrenProps, StateProps} from "../../atoms/Constants/Interfaces.ts";
 import {toDoReducer} from "../../store/TodoReducer.ts";
 import {getTodosState} from "../../utils/helpers.ts";
 
-const TodoContext = createContext<Todo[]>([]);
+const InitialState: StateProps = {
+    todo: [],
+    doing: [],
+    done: []
+};
+
+const TodoContext = createContext<StateProps>(InitialState);
 const TodoDispatch = createContext<Dispatch<Action> | null>(null);
 
 const TodoProvider = ({children}: ChildrenProps) => {

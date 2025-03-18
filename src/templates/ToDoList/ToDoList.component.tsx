@@ -1,4 +1,4 @@
-import {Todo} from "../../atoms/Constants/Interfaces.ts";
+import {StateProps, Todo} from "../../atoms/Constants/Interfaces.ts";
 import {memo} from "react";
 import {STATUS} from "../../atoms/Constants/Status.ts";
 import {SimpleGrid} from "@mantine/core";
@@ -8,25 +8,19 @@ import NoTasks from "../../organisms/NoTask/NoTasks.component.tsx";
 import {useTodoDispatch, useTodos} from "../../store/TodoReducer.ts";
 import ToDoSection from "../../organisms/TodoSection/ToDoSection.component.tsx";
 import "./ToDoList.styles.css"
-import {getMaxIndexTaskByStatus} from "../../utils/helpers.ts";
+import {isTodosEmpty} from "../../utils/helpers.ts";
 
 interface ToDoListProps {
     handleEditTask: (task: Todo) => void;
 }
 
 const ToDoList = ({handleEditTask}: ToDoListProps) => {
-    const todos: Todo[] = useTodos();
+    const data: StateProps = useTodos();
     const dispatch = useTodoDispatch();
 
-    const data: { todo: Todo[], doing: Todo[], done: Todo[] } = {
-        todo: getMaxIndexTaskByStatus(todos, STATUS.Todo),
-        doing: getMaxIndexTaskByStatus(todos, STATUS.Doing),
-        done: getMaxIndexTaskByStatus(todos, STATUS.Done)
-    };
-
-    const DragAndDropSection = memo((({type, items} : {type: string, items: Todo[]}) => {
+    const DragAndDropSection = memo((({status, items} : {status: string, items: Todo[]}) => {
         return (
-            <ToDoSection {...{type, items, handleEditTask, handleDeleteTask}}/>
+            <ToDoSection {...{status, items, handleEditTask, handleDeleteTask}}/>
         );
     }));
 
@@ -41,15 +35,15 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
         }
     };
 
-    if (todos.length === 0){
+    if (isTodosEmpty(data)){
         return <NoTasks/>;
     }
 
     return (
         <SimpleGrid cols={3} spacing="lg" mt={50} className="todo-list">
-            <DragAndDropSection type={STATUS.Todo} items={data.todo}/>
-            <DragAndDropSection type={STATUS.Doing} items={data.doing}/>
-            <DragAndDropSection type={STATUS.Done} items={data.done}/>
+            <DragAndDropSection status={STATUS.Todo} items={data.todo}/>
+            <DragAndDropSection status={STATUS.Doing} items={data.doing}/>
+            <DragAndDropSection status={STATUS.Done} items={data.done}/>
         </SimpleGrid>
     );
 };

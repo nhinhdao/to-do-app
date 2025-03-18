@@ -1,35 +1,45 @@
-import {Action, Todo} from "../atoms/Constants/Interfaces.ts";
+import {Action, StateProps, Todo} from "../atoms/Constants/Interfaces.ts";
 import {ActionTypes} from "../atoms/Constants/Actions.ts";
 import {Dispatch, useContext} from "react";
 import {TodoContext, TodoDispatch} from "../templates/TodoContext/ToDoContext.component.tsx";
-import {getMaxIndexTaskByStatus, setTodosState} from "../utils/helpers.ts";
+import {getTodosByStatus, setTodosState} from "../utils/helpers.ts";
 
-const toDoReducer = (state: Todo[], action: Action) => {
+const toDoReducer = (state: StateProps, action: Action) => {
     switch (action.type) {
         case ActionTypes.ADD: {
-            // set index of the item under its status
-            const maxIndex = getMaxIndexTaskByStatus(state, action.payload.status).length;
-            const todos = [...state, {
-                ...action.payload,
-                index: maxIndex,
-            }];
+            const {status} = action.payload;
+            const todosByStatus = getTodosByStatus(status);
+            const todos = {
+                ...state,
+                [status]: [...todosByStatus, action.payload]
+            };
 
             setTodosState(todos);
             return todos;
         }
         case ActionTypes.UPDATE: {
-            const todos =  state.map((t: Todo) => {
-                if (t.id === action.payload.id) {
-                    return action.payload;
-                }
-                return t;
-            });
+            const {status} = action.payload;
+            const todosByStatus = getTodosByStatus(status);
+            const todos = {
+                ...state,
+                [status]: todosByStatus.map((t: Todo) => {
+                    if (t.id === action.payload.id) {
+                        return action.payload;
+                    }
+                    return t;
+                })
+            };
 
             setTodosState(todos);
             return todos;
         }
         case ActionTypes.DELETE: {
-            const todos =  state.filter((t: Todo) => t.id !== action.payload.id);
+            const {status} = action.payload;
+            const todosByStatus = getTodosByStatus(status);
+            const todos = {
+                ...state,
+                [status]: todosByStatus.filter((t: Todo) => t.id !== action.payload.id)
+            };
 
             setTodosState(todos);
             return todos;
@@ -40,7 +50,7 @@ const toDoReducer = (state: Todo[], action: Action) => {
     }
 };
 
-const useTodos = (): Todo[] => {
+const useTodos = (): StateProps => {
     return useContext(TodoContext);
 };
 

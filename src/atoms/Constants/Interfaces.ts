@@ -1,21 +1,34 @@
 import {ReactNode} from "react";
 
-export interface ChildrenProps {
+interface ChildrenProps {
     children: ReactNode;
 }
 
-export interface TodoForm {
+interface TodoForm {
     name: string,
     content: string,
     status : string
 }
 
-export interface Todo extends TodoForm {
+interface Todo extends TodoForm {
     id: number;
-    index: number;
 }
 
-export interface Action {
+interface Action {
     type: string;
     payload: Todo;
+}
+
+interface StateProps {
+    todo: Todo[];
+    doing: Todo[];
+    done: Todo[]
+}
+
+export type {
+    ChildrenProps,
+    TodoForm,
+    Todo,
+    Action,
+    StateProps
 }
