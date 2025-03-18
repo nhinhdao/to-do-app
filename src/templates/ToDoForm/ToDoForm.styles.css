@@ -1,0 +1,36 @@
+.to-do-form {
+    .row-header {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .flex {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .row {
+        margin: 20px 5px;
+
+        .chip {
+            label span {
+                font-weight: bold;
+                color: white;
+            }
+
+            &.To-do label {
+                background-color: var(--mantine-color-gray-5);
+            }
+
+            &.Doing label {
+                background-color: var(--mantine-color-blue-6);
+            }
+
+            &.Done label {
+                background-color: var(--mantine-color-green-9);
+            }
+        }
+    }
+}

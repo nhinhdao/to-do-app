@@ -1,0 +1,18 @@
+.todo-card {
+    .todo-content {
+        width: 70%;
+    }
+
+    .header, .text {
+        margin: 5px 0;
+    }
+
+    .header {
+        font-weight: 600;
+        color: var(--mantine-color-cyan-9);
+    }
+
+    .text {
+        font-size: 14px;
+    }
+}

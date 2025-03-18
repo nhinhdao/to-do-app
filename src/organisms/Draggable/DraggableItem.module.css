@@ -1,0 +1,28 @@
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    width: 100%;
+    border-radius: var(--mantine-radius-md);
+    border: 1px solid var(--mantine-color-gray-4);
+    padding: var(--mantine-spacing-md);
+    background-color: white;
+    margin-bottom: var(--mantine-spacing-sm);
+}
+
+.itemDragging {
+    box-shadow: var(--mantine-shadow-sm);
+}
+
+.toDoItem {
+    width: 90%;
+}
+
+.dragHandle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--mantine-color-gray-6);
+}

@@ -1,0 +1,16 @@
+.todo-list {
+    margin-top: 35px;
+
+    .todo-section {
+        padding: 1em;
+        background: var(--mantine-color-gray-1);
+        border-radius: 10px;
+        border: 1px solid var(--mantine-color-gray-2);
+
+        .todo-section-header {
+            font-weight: 500;
+            margin-top: 5px;
+            color: var(--mantine-color-gray-8);
+        }
+    }
+}
