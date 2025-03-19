@@ -1,5 +1,6 @@
 import {StateProps, Todo} from "../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../atoms/Constants/Status.ts";
+import {InitialState} from "../atoms/Constants/InitialState.ts";
 
 // format string to display in button and header
 const formatStatus = (status: string): string => {
@@ -17,7 +18,7 @@ const setTodosState = (todos: StateProps): void => {
 // get todos from localStorage
 const getTodosState = (): StateProps => {
     const todos = localStorage.getItem("todos");
-    return todos ? JSON.parse(todos) : {};
+    return todos ? JSON.parse(todos) : InitialState;
 };
 
 // get todos by status

@@ -15,7 +15,7 @@ const ToDoSection = ({status, items, handleEditTask}: ToDoSectionProps) => {
         <div className="todo-section">
             <p className="todo-section-header">{formatStatus(status)}: {items?.length  || 0}</p>
             <DroppableZone type={status}>
-                {items.map((todo: Todo, index: number) => (
+                {items?.map((todo: Todo, index: number) => (
                     <DraggableItem key={todo.id} item={todo} index={index}>
                         <ToDoCard {...{todo, handleEditTask}}/>
                     </DraggableItem>
