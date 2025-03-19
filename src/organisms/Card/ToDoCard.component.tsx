@@ -2,7 +2,6 @@ import {Button, Card, Group} from "@mantine/core";
 import {Todo} from "../../atoms/Constants/Interfaces.ts";
 import "./ToDoCard.styles.css"
 import {useEffect, useState} from "react";
-import {useDisclosure} from "@mantine/hooks";
 import ModalItem from "../../atoms/Modal/ModalItem.component.tsx";
 import {IconEdit, IconTrash} from "@tabler/icons-react";
 
@@ -14,11 +13,11 @@ interface ToDoCardProps {
 
 const ToDoCard = ({todo, handleEditTask, handleDeleteTask}: ToDoCardProps) => {
     const [toBeDeleted, setToBeDeleted] = useState<boolean>(false);
-    const [opened, { open, close }] = useDisclosure(false);
+    const [openModal, setOpenModal] = useState<boolean>(false);
 
     useEffect(() => {
         if (toBeDeleted) {
-            close();
+            setOpenModal(false);
             handleDeleteTask(todo);
         }
     }, [toBeDeleted])
@@ -43,18 +42,18 @@ const ToDoCard = ({todo, handleEditTask, handleDeleteTask}: ToDoCardProps) => {
                         <IconTrash
                             size={20}
                             color="red"
-                            onClick={open}/>
+                            onClick={() => setOpenModal(true)}/>
                     </Group>
                 </Group>
             </Card>
 
             <ModalItem
-                opened={opened}
-                close={close}
+                opened={openModal}
+                close={() => setOpenModal(false)}
                 title="Are you sure?">
                 <p>Perform this action will permanently delete the task.</p>
                 <Group  mt="xl">
-                    <Button variant="default" onClick={close}>Cancel</Button>
+                    <Button variant="default" onClick={() => setOpenModal(false)}>Cancel</Button>
                     <Button variant="filled" onClick={() => setToBeDeleted(true)}>Proceed</Button>
                 </Group>
             </ModalItem>
