@@ -18,6 +18,7 @@ const toDoReducer = (state: StateProps, action: TodoActions) => {
             return todos;
         }
         case ActionTypes.UPDATE: {
+            console.log(action);
             const {status} = action.payload;
             const todosByStatus = getTodosByStatus(state, status);
             const todos = {
@@ -29,6 +30,7 @@ const toDoReducer = (state: StateProps, action: TodoActions) => {
                     return t;
                 })
             };
+            console.log(todos);
 
             setTodosState(todos);
             return todos;

@@ -7,17 +7,16 @@ import {formatStatus} from "../../utils/helpers.ts";
 interface ToDoSectionProps {
     status: string;
     items: Todo[];
-    handleEditTask: (task: Todo) => void;
 }
 
-const ToDoSection = ({status, items, handleEditTask}: ToDoSectionProps) => {
+const ToDoSection = ({status, items}: ToDoSectionProps) => {
     return (
         <div className="todo-section">
             <p className="todo-section-header">{formatStatus(status)}: {items?.length  || 0}</p>
             <DroppableZone type={status}>
                 {items?.map((todo: Todo, index: number) => (
                     <DraggableItem key={todo.id} item={todo} index={index}>
-                        <ToDoCard {...{todo, handleEditTask}}/>
+                        <ToDoCard todo={todo}/>
                     </DraggableItem>
                 ))}
             </DroppableZone>

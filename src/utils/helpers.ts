@@ -41,6 +41,11 @@ const isTodosEmpty = (todos: StateProps): boolean => {
     return Object.values(todos).every(t => t == null || t.length === 0);
 };
 
+// Check if a task is marked as done when it is previously not done
+const isTaskDone = (oldStatus: string, newStatus: string): boolean => {
+    return oldStatus !== newStatus && newStatus === STATUS.Done;
+}
+
 // handle order and swap items after drag and drops, return new state
 const handleDragAndDrop = (
     sourceIndex: number,
@@ -87,5 +92,6 @@ export {
     getTodosByStatus,
     reorderItems,
     isTodosEmpty,
+    isTaskDone,
     handleDragAndDrop
 };

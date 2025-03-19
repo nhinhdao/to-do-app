@@ -6,8 +6,8 @@ import {Todo, TodoForm} from "../../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../../atoms/Constants/Status.ts";
 
 interface ToDoFormProps {
-    task : Todo | null;
-    handleSubmit: (todo: Todo | TodoForm) => void;
+    task? : Todo;
+    handleSubmit: (todo: Todo) => void;
 }
 
 const INITIAL_VALUES: TodoForm = {
@@ -58,7 +58,10 @@ const ToDoForm = ({task, handleSubmit}: ToDoFormProps) => {
 
     const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        handleSubmit(formValues);
+        handleSubmit({
+            id: performance.now(),
+            ...formValues,
+        });
     };
 
     return (

@@ -1,37 +1,20 @@
 import {useReward} from "react-rewards";
-import {StateProps, Todo} from "../../atoms/Constants/Interfaces.ts";
-import {memo} from "react";
+import {StateProps} from "../../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../../atoms/Constants/Status.ts";
-import {Group, SimpleGrid} from "@mantine/core";
+import {SimpleGrid} from "@mantine/core";
 import {ActionTypes} from "../../atoms/Constants/Actions.ts";
 import NoTasks from "../../organisms/NoTask/NoTasks.component.tsx";
 import {useTodoDispatch, useTodos} from "../../store/TodoReducer.ts";
 import ToDoSection from "../../organisms/TodoSection/ToDoSection.component.tsx";
 import {DragDropContext, DropResult} from "@hello-pangea/dnd";
-import {handleDragAndDrop, isTodosEmpty} from "../../utils/helpers.ts";
+import {handleDragAndDrop, isTaskDone, isTodosEmpty} from "../../utils/helpers.ts";
+import {ConfettiConfig} from "../../atoms/Constants/ConfettiConfig.ts";
 import "./ToDoList.styles.css";
 
-interface ToDoListProps {
-    handleEditTask: (task: Todo) => void;
-}
-
-const ToDoList = ({handleEditTask}: ToDoListProps) => {
+const ToDoList = () => {
     const data: StateProps = useTodos();
     const dispatch = useTodoDispatch();
-    const {reward: confettiReward} = useReward('confettiReward', 'emoji', {
-        lifetime: 250,
-        spread: 100,
-        elementCount: 42,
-        elementSize: 40,
-        zIndex: 1000,
-        emoji: ['👍', '💐', '🥳']
-    });
-
-    const DragAndDropSection = memo(({status, items}: { status: string, items: Todo[] }) => {
-        return (
-            <ToDoSection key={status} {...{status, items, handleEditTask}}/>
-        );
-    });
+    const {reward: confettiReward} = useReward('confettiReward', 'emoji', ConfettiConfig);
 
     const onDragEnd = (result: DropResult) => {
         const {destination, source} = result;
@@ -59,7 +42,7 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
                 payload: newState
             });
 
-            if (sourceStatus !== destinationStatus && destinationStatus === STATUS.Done) {
+            if (isTaskDone(sourceStatus, destinationStatus)) {
                 confettiReward();
             }
         }
@@ -71,17 +54,14 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Group justify="center">
-                <span id="confettiReward"/>
-            </Group>
             <SimpleGrid
                 className="todo-list"
                 cols={{ base: 1, sm: 1, lg: 3 }}
                 spacing={{ base: 10, sm: 'xl' }}
                 verticalSpacing={{ base: 'md', sm: 'xl' }}>
-                <DragAndDropSection status={STATUS.Todo} items={data.todo}/>
-                <DragAndDropSection status={STATUS.Doing} items={data.doing}/>
-                <DragAndDropSection status={STATUS.Done} items={data.done}/>
+                <ToDoSection key={STATUS.Todo} status={STATUS.Todo} items={data.todo}/>
+                <ToDoSection key={STATUS.Doing} status={STATUS.Doing} items={data.doing}/>
+                <ToDoSection key={STATUS.Done} status={STATUS.Done} items={data.done}/>
             </SimpleGrid>
         </DragDropContext>
     );

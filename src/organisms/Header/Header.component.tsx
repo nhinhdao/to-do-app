@@ -1,26 +1,17 @@
-import {Button, Container, Group} from "@mantine/core";
-import {memo} from "react";
+import {Container, Group} from "@mantine/core";
+import NewTask from "../NewTask/NewTask.component.tsx";
 
-interface HeaderProps {
-    handleAddTask: () => void;
-}
-
-const Header = memo(({handleAddTask}: HeaderProps) => {
+const Header = () => {
     return (
         <header>
             <Container size="xl" className="header-inner">
                 <Group justify="space-between">
                     <h1>To Do List</h1>
-
-                    <Button
-                        variant="light"
-                        onClick={handleAddTask}>
-                        Add Task
-                    </Button>
+                    <NewTask />
                 </Group>
             </Container>
         </header>
     );
-});
+};
 
 export default Header;
