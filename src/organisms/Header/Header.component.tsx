@@ -1,10 +1,11 @@
 import {Button, Container, Group} from "@mantine/core";
+import {memo} from "react";
 
 interface HeaderProps {
     handleAddTask: () => void;
 }
 
-const Header = ({handleAddTask}: HeaderProps) => {
+const Header = memo(({handleAddTask}: HeaderProps) => {
     return (
         <header>
             <Container size="xl" className="header-inner">
@@ -20,6 +21,6 @@ const Header = ({handleAddTask}: HeaderProps) => {
             </Container>
         </header>
     );
-};
+});
 
 export default Header;

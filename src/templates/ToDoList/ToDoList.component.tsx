@@ -27,11 +27,11 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
         emoji: ['👍', '💐', '🥳']
     });
 
-    const DragAndDropSection = memo((({status, items}: { status: string, items: Todo[] }) => {
+    const DragAndDropSection = memo(({status, items}: { status: string, items: Todo[] }) => {
         return (
             <ToDoSection key={status} {...{status, items, handleEditTask}}/>
         );
-    }));
+    });
 
     const onDragEnd = (result: DropResult) => {
         const {destination, source} = result;

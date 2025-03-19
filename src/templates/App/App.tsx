@@ -1,6 +1,6 @@
 import '@mantine/core/styles.css';
 import {TodoActions, Todo, TodoForm} from "../../atoms/Constants/Interfaces.ts";
-import {Dispatch, useState} from "react";
+import {Dispatch, useCallback, useState} from "react";
 import {ActionTypes} from "../../atoms/Constants/Actions.ts";
 import {notifications} from "@mantine/notifications";
 import {Container} from "@mantine/core";
@@ -20,10 +20,10 @@ function App() {
         setShowForm(true);
     }
 
-    const handleEditTask = (task: Todo) => {
+    const handleEditTask = useCallback((task: Todo) => {
         setCurrentTask(task);
         setShowForm(true);
-    }
+    }, []);
 
     const handleSubmit = (formValues: Todo | TodoForm) => {
         if (dispatch != null) {
@@ -45,9 +45,10 @@ function App() {
         }
     };
 
+
     return (
         <Container size="xl">
-            <Header {...{handleAddTask}} />
+            <Header handleAddTask={handleAddTask} />
 
             <ToDoList {...{handleEditTask}}/>
 
