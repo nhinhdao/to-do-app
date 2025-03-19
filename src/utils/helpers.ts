@@ -8,7 +8,7 @@ const formatStatus = (status: string): string => {
         return "To do";
     }
     return status.charAt(0).toUpperCase() + status.slice(1);
-}
+};
 
 // save todos to localStorage
 const setTodosState = (todos: StateProps): void => {
@@ -44,46 +44,7 @@ const isTodosEmpty = (todos: StateProps): boolean => {
 // Check if a task is marked as done when it is previously not done
 const isTaskDone = (oldStatus: string, newStatus: string): boolean => {
     return oldStatus !== newStatus && newStatus === STATUS.Done;
-}
-
-// handle order and swap items after drag and drops, return new state
-const handleDragAndDrop = (
-    sourceIndex: number,
-    sourceStatus: string,
-    destinationIndex: number,
-    destinationStatus: string,
-): StateProps | null => {
-    const state = getTodosState();
-    const tempState = {
-        todo: [...state.todo],
-        doing: [...state.doing],
-        done: [...state.done]
-    };
-
-    const sourceCollection: Todo[] = tempState[sourceStatus as keyof StateProps];
-
-    // handle drop within the same status section
-    if (sourceStatus === destinationStatus) {
-        tempState[sourceStatus as keyof StateProps] = reorderItems(sourceCollection, sourceIndex, destinationIndex);
-    }
-    // handle drop across status section
-    else {
-        const destinationCollection: Todo[] = tempState[destinationStatus as keyof StateProps];
-
-        // remove item from source list and set status
-        const [sourceTodo]: Todo[] = sourceCollection.splice(sourceIndex, 1);
-        sourceTodo.status = destinationStatus;
-
-        // add item to the destination list
-        destinationCollection.splice(destinationIndex, 0, sourceTodo);
-
-        // set collections to new state
-        tempState[sourceStatus as keyof StateProps] = sourceCollection;
-        tempState[destinationStatus as keyof StateProps] = destinationCollection;
-    }
-
-    return tempState;
-}
+};
 
 export {
     formatStatus,
@@ -92,6 +53,5 @@ export {
     getTodosByStatus,
     reorderItems,
     isTodosEmpty,
-    isTaskDone,
-    handleDragAndDrop
+    isTaskDone
 };

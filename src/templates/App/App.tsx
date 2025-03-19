@@ -13,10 +13,8 @@ function App() {
             </Group>
 
             <ToDoList/>
-
-
         </Container>
     );
-};
+}
 
 export default App
