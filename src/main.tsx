@@ -1,4 +1,3 @@
-import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import './index.css';
 import '@mantine/notifications/styles.css';
@@ -10,12 +9,10 @@ import {theme} from "./atoms/Theme/theme.ts";
 import "./assets/fonts.css"
 
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        <TodoProvider>
-            <MantineProvider theme={theme}>
-                <Notifications className="notification" autoClose={4000} position='top-right'/>
-                <App/>
-            </MantineProvider>
-        </TodoProvider>
-    </StrictMode>,
+    <TodoProvider>
+        <MantineProvider theme={theme}>
+            <Notifications className="notification" autoClose={3000} position='top-center'/>
+            <App/>
+        </MantineProvider>
+    </TodoProvider>
 )

@@ -1,9 +1,8 @@
 import {Todo} from "../../atoms/Constants/Interfaces.ts";
 import {ReactNode} from "react";
-import classes from './DraggableItem.module.css';
 import {Draggable} from "@hello-pangea/dnd";
 import {IconGripVertical} from "@tabler/icons-react";
-import cx from 'clsx';
+import "./DraggableItem.styles.css"
 
 interface DraggableProps {
     item: Todo;
@@ -16,13 +15,13 @@ const DraggableItem = ({item, index, children}: DraggableProps) => {
         <Draggable index={index} draggableId={item.id.toString()}>
             {(provided, snapshot) => (
                 <div
-                    className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
+                    className={`draggable-item ${snapshot.isDragging ? "item-is-dragging" : ""}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
-                    <div className={classes.toDoItem}>
+                    <div className="draggable-item-content">
                         {children}
                     </div>
-                    <div {...provided.dragHandleProps} className={classes.dragHandle}>
+                    <div {...provided.dragHandleProps} className="draggable-item-handle">
                         <IconGripVertical size={20}/>
                     </div>
                 </div>

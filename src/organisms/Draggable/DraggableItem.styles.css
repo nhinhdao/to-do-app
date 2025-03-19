@@ -1,4 +1,4 @@
-.item {
+.draggable-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -11,15 +11,15 @@
     margin-bottom: var(--mantine-spacing-sm);
 }
 
-.itemDragging {
+.item-is-dragging {
     box-shadow: var(--mantine-shadow-sm);
 }
 
-.toDoItem {
+.draggable-item-content {
     width: 90%;
 }
 
-.dragHandle {
+.draggable-item-handle {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -7,7 +7,7 @@ import {STATUS} from "../../atoms/Constants/Status.ts";
 
 interface ToDoFormProps {
     task : Todo | null;
-    onSubmit: (todo: Todo | TodoForm) => void;
+    handleSubmit: (todo: Todo | TodoForm) => void;
 }
 
 const INITIAL_VALUES: TodoForm = {
@@ -16,12 +16,13 @@ const INITIAL_VALUES: TodoForm = {
     status: STATUS.Todo
 }
 
-const ToDoForm = ({task, onSubmit}: ToDoFormProps) => {
+const ToDoForm = ({task, handleSubmit}: ToDoFormProps) => {
     const [formValues, setFormValues] = useState<TodoForm>(INITIAL_VALUES);
 
     useEffect(() => {
-        if (task != null)
-        setFormValues(task);
+        if (task != null){
+            setFormValues(task);
+        }
     }, [task]);
 
     const handleClearInput = () => {
@@ -55,14 +56,14 @@ const ToDoForm = ({task, onSubmit}: ToDoFormProps) => {
         });
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSubmit(formValues);
+        handleSubmit(formValues);
     };
 
     return (
         <div className="to-do-form">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={onFormSubmit}>
                 <div className="flex row">
                     <span className="row-header">Status:</span>
                     <Group>

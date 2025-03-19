@@ -1,5 +1,5 @@
 import '@mantine/core/styles.css';
-import {Action, Todo, TodoForm} from "../../atoms/Constants/Interfaces.ts";
+import {TodoActions, Todo, TodoForm} from "../../atoms/Constants/Interfaces.ts";
 import {Dispatch, useState} from "react";
 import {ActionTypes} from "../../atoms/Constants/Actions.ts";
 import {notifications} from "@mantine/notifications";
@@ -13,7 +13,7 @@ import {useTodoDispatch} from "../../store/TodoReducer.ts";
 function App() {
     const [showForm, setShowForm] = useState<boolean>(false);
     const [currentTask, setCurrentTask] = useState<Todo | null>(null);
-    const dispatch: Dispatch<Action> | null = useTodoDispatch();
+    const dispatch: Dispatch<TodoActions> | null = useTodoDispatch();
 
     const handleAddTask = () => {
         setCurrentTask(null);
@@ -41,7 +41,7 @@ function App() {
             });
 
             setShowForm(false);
-            notifications.show({message: `Successfully ${action}d task.`, position: 'top-right'});
+            notifications.show({message: `Successfully ${action}d task.`});
         }
     };
 
@@ -55,7 +55,7 @@ function App() {
                 opened={showForm}
                 close={() => setShowForm(false)}
                 title={currentTask == null ? "Add Task" : "Update Task"}>
-                <ToDoForm task={currentTask} onSubmit={handleSubmit}/>
+                <ToDoForm task={currentTask} handleSubmit={handleSubmit}/>
             </ModalItem>
         </Container>
     )
