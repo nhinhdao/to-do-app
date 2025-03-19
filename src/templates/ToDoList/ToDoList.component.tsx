@@ -74,7 +74,11 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
             <Group justify="center">
                 <span id="confettiReward"/>
             </Group>
-            <SimpleGrid cols={3} spacing="lg" mt={50} className="todo-list">
+            <SimpleGrid
+                className="todo-list"
+                cols={{ base: 1, sm: 1, lg: 3 }}
+                spacing={{ base: 10, sm: 'xl' }}
+                verticalSpacing={{ base: 'md', sm: 'xl' }}>
                 <DragAndDropSection status={STATUS.Todo} items={data.todo}/>
                 <DragAndDropSection status={STATUS.Doing} items={data.doing}/>
                 <DragAndDropSection status={STATUS.Done} items={data.done}/>
