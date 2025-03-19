@@ -1,10 +1,10 @@
-import {Action, StateProps, Todo} from "../atoms/Constants/Interfaces.ts";
+import {StateProps, Todo, TodoActions} from "../atoms/Constants/Interfaces.ts";
 import {ActionTypes} from "../atoms/Constants/Actions.ts";
 import {Dispatch, useContext} from "react";
 import {TodoContext, TodoDispatch} from "../templates/TodoContext/ToDoContext.component.tsx";
 import {getTodosByStatus, setTodosState} from "../utils/helpers.ts";
 
-const toDoReducer = (state: StateProps, action: Action) => {
+const toDoReducer = (state: StateProps, action: TodoActions) => {
     switch (action.type) {
         case ActionTypes.ADD: {
             const {status} = action.payload;
@@ -44,6 +44,10 @@ const toDoReducer = (state: StateProps, action: Action) => {
             setTodosState(todos);
             return todos;
         }
+        case ActionTypes.SET: {
+            setTodosState(action.payload);
+            return action.payload;
+        }
         default: {
             return state;
         }
@@ -54,7 +58,7 @@ const useTodos = (): StateProps => {
     return useContext(TodoContext);
 };
 
-const useTodoDispatch = (): Dispatch<Action> | null => {
+const useTodoDispatch = (): Dispatch<TodoActions> | null => {
     return useContext(TodoDispatch);
 };
 

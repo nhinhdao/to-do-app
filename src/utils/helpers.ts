@@ -28,7 +28,8 @@ const setTodosByStatus = (status: string, todos: Todo[]): void => {
 
 const getTodosByStatus = (status: string): Todo[] => {
     const state = getTodosState();
-    return state[status as keyof StateProps];
+    const todos = state[status as keyof StateProps] || [];
+    return [...todos];
 };
 
 const reorderItems = (todos: Todo[], sourceIndex: number, destinationIndex: number): Todo[] => {

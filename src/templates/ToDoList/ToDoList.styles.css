@@ -11,6 +11,11 @@
             font-weight: 500;
             margin-top: 5px;
             color: var(--mantine-color-gray-8);
+
+            /* extend the droppable zone to cover the whole height of the container */
+            + div {
+                min-height: 100%;
+            }
         }
     }
 }

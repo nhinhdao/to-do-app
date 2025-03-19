@@ -29,6 +29,6 @@ const DraggableItem = ({item, index, children}: DraggableProps) => {
             )}
         </Draggable>
     );
-}
+};
 
 export default DraggableItem;

@@ -8,9 +8,7 @@ interface DroppableProps {
 
 const DroppableZone = ({type, children} : DroppableProps) => {
     return (
-        <Droppable
-            droppableId={`dnd-list-${type}`}
-            direction="vertical">
+        <Droppable droppableId={`dnd-list-${type}`}>
             {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                     {children}

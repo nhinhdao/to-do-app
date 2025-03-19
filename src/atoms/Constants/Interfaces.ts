@@ -1,4 +1,5 @@
 import {ReactNode} from "react";
+import {ActionTypes} from "./Actions.ts";
 
 interface ChildrenProps {
     children: ReactNode;
@@ -14,7 +15,7 @@ interface Todo extends TodoForm {
     id: number;
 }
 
-interface Action {
+interface ReducerAction {
     type: string;
     payload: Todo;
 }
@@ -25,10 +26,17 @@ interface StateProps {
     done: Todo[]
 }
 
+type TodoActions =
+    | { type: ActionTypes.ADD; payload: Todo }
+    | { type: ActionTypes.UPDATE; payload: Todo }
+    | { type: ActionTypes.DELETE; payload: Todo }
+    | { type: ActionTypes.SET; payload: StateProps };
+
 export type {
     ChildrenProps,
     TodoForm,
     Todo,
-    Action,
-    StateProps
+    ReducerAction,
+    StateProps,
+    TodoActions
 }
