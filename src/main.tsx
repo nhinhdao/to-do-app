@@ -11,7 +11,7 @@ import "./assets/fonts.css"
 createRoot(document.getElementById('root')!).render(
     <TodoProvider>
         <MantineProvider theme={theme}>
-            <Notifications className="notification" autoClose={3000} position='top-center'/>
+            <Notifications className="notification" autoClose={1500} position='top-center'/>
             <App/>
         </MantineProvider>
     </TodoProvider>
