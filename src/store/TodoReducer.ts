@@ -8,7 +8,7 @@ const toDoReducer = (state: StateProps, action: TodoActions) => {
     switch (action.type) {
         case ActionTypes.ADD: {
             const {status} = action.payload;
-            const todosByStatus = getTodosByStatus(status);
+            const todosByStatus = getTodosByStatus(state, status);
             const todos = {
                 ...state,
                 [status]: [...todosByStatus, action.payload]
@@ -19,7 +19,7 @@ const toDoReducer = (state: StateProps, action: TodoActions) => {
         }
         case ActionTypes.UPDATE: {
             const {status} = action.payload;
-            const todosByStatus = getTodosByStatus(status);
+            const todosByStatus = getTodosByStatus(state, status);
             const todos = {
                 ...state,
                 [status]: todosByStatus.map((t: Todo) => {
@@ -35,7 +35,7 @@ const toDoReducer = (state: StateProps, action: TodoActions) => {
         }
         case ActionTypes.DELETE: {
             const {status} = action.payload;
-            const todosByStatus = getTodosByStatus(status);
+            const todosByStatus = getTodosByStatus(state, status);
             const todos = {
                 ...state,
                 [status]: todosByStatus.filter((t: Todo) => t.id !== action.payload.id)

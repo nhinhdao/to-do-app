@@ -1,7 +1,7 @@
 import {StateProps, Todo} from "../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../atoms/Constants/Status.ts";
-import {DropResult} from "@hello-pangea/dnd";
 
+// format string to display in button and header
 const formatStatus = (status: string): string => {
     if (status === STATUS.Todo) {
         return "To do";
@@ -9,21 +9,24 @@ const formatStatus = (status: string): string => {
     return status.charAt(0).toUpperCase() + status.slice(1);
 }
 
+// save todos to localStorage
 const setTodosState = (todos: StateProps): void => {
     localStorage.setItem("todos", JSON.stringify(todos));
 };
 
+// get todos from localStorage
 const getTodosState = (): StateProps => {
     const todos = localStorage.getItem("todos");
     return todos ? JSON.parse(todos) : {};
 };
 
-const getTodosByStatus = (status: string): Todo[] => {
-    const state = getTodosState();
+// get todos by status
+const getTodosByStatus = (state: StateProps, status: string): Todo[] => {
     const todos = state[status as keyof StateProps] || [];
     return [...todos];
 };
 
+// return new array with items swapped between source and destination index
 const reorderItems = (todos: Todo[], sourceIndex: number, destinationIndex: number): Todo[] => {
     const arr = [...todos];
     const temp = arr[sourceIndex];
@@ -32,15 +35,18 @@ const reorderItems = (todos: Todo[], sourceIndex: number, destinationIndex: numb
     return arr;
 };
 
+// check if to do state is empty
 const isTodosEmpty = (todos: StateProps): boolean => {
     return Object.values(todos).every(t => t == null || t.length === 0);
 };
 
-const handleDragAndDrop = ({destination, source}: DropResult): StateProps | null => {
-    if ( destination == null){
-        return null;
-    }
-
+// handle order and swap items after drag and drops, return new state
+const handleDragAndDrop = (
+    sourceIndex: number,
+    sourceStatus: string,
+    destinationIndex: number,
+    destinationStatus: string,
+): StateProps | null => {
     const state = getTodosState();
     const tempState = {
         todo: [...state.todo],
@@ -48,12 +54,7 @@ const handleDragAndDrop = ({destination, source}: DropResult): StateProps | null
         done: [...state.done]
     };
 
-    const sourceIndex: number = source.index;
-    const sourceStatus: string = source.droppableId.replace("dnd-list-", "");
     const sourceCollection: Todo[] = tempState[sourceStatus as keyof StateProps];
-
-    const destinationIndex = destination.index;
-    const destinationStatus = destination.droppableId.replace("dnd-list-", "");
 
     // handle drop within the same status section
     if (sourceStatus === destinationStatus) {

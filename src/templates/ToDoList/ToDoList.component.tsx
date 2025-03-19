@@ -1,3 +1,4 @@
+import {useReward} from "react-rewards";
 import {StateProps, Todo} from "../../atoms/Constants/Interfaces.ts";
 import {memo} from "react";
 import {STATUS} from "../../atoms/Constants/Status.ts";
@@ -9,7 +10,6 @@ import ToDoSection from "../../organisms/TodoSection/ToDoSection.component.tsx";
 import {DragDropContext, DropResult} from "@hello-pangea/dnd";
 import {handleDragAndDrop, isTodosEmpty} from "../../utils/helpers.ts";
 import "./ToDoList.styles.css";
-import {useReward} from "react-rewards";
 
 interface ToDoListProps {
     handleEditTask: (task: Todo) => void;
@@ -36,11 +36,22 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
     const onDragEnd = (result: DropResult) => {
         const {destination, source} = result;
 
-        if (destination == null || (source.droppableId === destination.droppableId && source.index === destination.index)) {
+        if (destination == null) {
             return;
         }
 
-        const newState = handleDragAndDrop(result);
+        const sourceIndex: number = source.index;
+        const sourceStatus: string = source.droppableId.replace("dnd-list-", "");
+
+        const destinationIndex = destination.index;
+        const destinationStatus = destination.droppableId.replace("dnd-list-", "");
+
+        // if nothing changes after dragging and dropping
+        if (source.droppableId === destination.droppableId && sourceIndex === destinationIndex) {
+            return;
+        }
+
+        const newState = handleDragAndDrop(sourceIndex, sourceStatus, destinationIndex, destinationStatus);
 
         if (dispatch != null && newState != null) {
             dispatch({
@@ -48,8 +59,6 @@ const ToDoList = ({handleEditTask}: ToDoListProps) => {
                 payload: newState
             });
 
-            const sourceStatus: string = source.droppableId.replace("dnd-list-", "");
-            const destinationStatus = destination.droppableId.replace("dnd-list-", "");
             if (sourceStatus !== destinationStatus && destinationStatus === STATUS.Done) {
                 confettiReward();
             }
