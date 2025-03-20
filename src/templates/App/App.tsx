@@ -22,17 +22,17 @@ function App() {
 
     return (
         <Suspense fallback={<LoadingOverlay visible={true} zIndex={1000}/>}>
-        <Container size="xl">
-            <Header />
+            <Container size="xl">
+                <Header />
 
-            <Group justify="center">
-                <span id="confettiReward"/>
-            </Group>
+                <Group justify="center">
+                    <span id="confettiReward"/>
+                </Group>
 
-            {renderContent()}
-        </Container>
+                {renderContent()}
+            </Container>
         </Suspense>
     );
 }
 
-export default App
+export default App;
