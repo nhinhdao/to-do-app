@@ -1,6 +1,6 @@
 # To Do Application
 
-This application lets user create and manage to do.
+This application lets user create and manage to dos.
 
 Frameworks and packages used:
 
