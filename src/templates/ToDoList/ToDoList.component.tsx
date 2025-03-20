@@ -3,11 +3,10 @@ import {StateMap, Todo} from "../../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../../atoms/Constants/Status.ts";
 import {SimpleGrid} from "@mantine/core";
 import {ActionTypes} from "../../atoms/Constants/Actions.ts";
-import NoTasks from "../../organisms/NoTask/NoTasks.component.tsx";
 import {useTodoDispatch, useTodos} from "../../store/TodoReducer.ts";
 import ToDoSection from "../../organisms/TodoSection/ToDoSection.component.tsx";
 import {DragDropContext, DropResult} from "@hello-pangea/dnd";
-import {isTaskDone, isTodosEmpty, reorderItems} from "../../utils/helpers.ts";
+import {isTaskDone, reorderItems} from "../../utils/helpers.ts";
 import {ConfettiConfig} from "../../atoms/Constants/ConfettiConfig.ts";
 import "./ToDoList.styles.css";
 
@@ -68,10 +67,6 @@ const ToDoList = () => {
             }
         }
     };
-
-    if (isTodosEmpty(data)) {
-        return <NoTasks/>;
-    }
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
