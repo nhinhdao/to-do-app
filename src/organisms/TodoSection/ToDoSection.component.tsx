@@ -6,7 +6,7 @@ import {formatStatus} from "../../utils/helpers.ts";
 
 interface ToDoSectionProps {
     status: string;
-    items: Todo[];
+    items: Todo[] | undefined;
 }
 
 const ToDoSection = ({status, items}: ToDoSectionProps) => {

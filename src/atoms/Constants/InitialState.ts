@@ -1,7 +1,8 @@
-import {StateProps} from "./Interfaces.ts";
+import {StateMap, Todo} from "./Interfaces.ts";
+import {STATUS} from "./Status.ts";
 
-export const InitialState: StateProps = {
-    todo: [],
-    doing: [],
-    done: []
-};
+export const DefaultState: StateMap = new Map<string, Todo[]>([
+    [STATUS.Todo, []],
+    [STATUS.Doing, []],
+    [STATUS.Done, []]
+])

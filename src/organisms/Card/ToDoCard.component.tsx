@@ -1,5 +1,5 @@
 import {Card, Group} from "@mantine/core";
-import {StateProps, Todo, TodoActions} from "../../atoms/Constants/Interfaces.ts";
+import {StateMap, Todo, TodoActions} from "../../atoms/Constants/Interfaces.ts";
 import "./ToDoCard.styles.css"
 import {Dispatch, useState} from "react";
 import ModalItem from "../../atoms/Modal/ModalItem.component.tsx";
@@ -28,7 +28,7 @@ const InitialModalState: ModalState = {
 }
 
 const ToDoCard = ({todo,}: ToDoCardProps) => {
-    const data: StateProps = useTodos();
+    const data: StateMap = useTodos();
     const {reward: confettiReward} = useReward('confettiReward', 'emoji', ConfettiConfig);
     const dispatch: Dispatch<TodoActions> | null = useTodoDispatch();
     const [modal, setModal] = useState<ModalState>(InitialModalState);
@@ -58,10 +58,11 @@ const ToDoCard = ({todo,}: ToDoCardProps) => {
     };
 
     const handleUpdate = (formValues: Todo) => {
+        const tempState = new Map(data);
         const oldStatus = todo.status;
         const newStatus = formValues.status;
-        const sourceCollection: Todo[] = [...data[oldStatus as keyof StateProps]];
-        const destinationCollection: Todo[] = [...data[newStatus as keyof StateProps]];
+        const sourceCollection: Todo[] = tempState.get(oldStatus) || [];
+        const destinationCollection: Todo[] = tempState.get(newStatus) || [];
 
         if (dispatch == null) return;
 
@@ -73,6 +74,7 @@ const ToDoCard = ({todo,}: ToDoCardProps) => {
             });
         }
         else {
+
             const currentIndex = sourceCollection.findIndex(task => task.id === todo.id);
             // remove item from source list
             const [sourceTodo]: Todo[] = sourceCollection.splice(currentIndex, 1);
@@ -82,15 +84,12 @@ const ToDoCard = ({todo,}: ToDoCardProps) => {
             destinationCollection.push(sourceTodo);
 
             // set collections to new state
-            const newState = {
-                ...data,
-                [oldStatus]: sourceCollection,
-                [newStatus]: destinationCollection
-            }
+            tempState.set(oldStatus, sourceCollection);
+            tempState.set(newStatus, destinationCollection);
 
             dispatch({
                 type: ActionTypes.SET,
-                payload: newState
+                payload: tempState,
             });
         }
 

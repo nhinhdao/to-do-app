@@ -1,6 +1,6 @@
-import {StateProps, Todo} from "../atoms/Constants/Interfaces.ts";
+import {StateMap, Todo, TodoObj} from "../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../atoms/Constants/Status.ts";
-import {InitialState} from "../atoms/Constants/InitialState.ts";
+import {DefaultState} from "../atoms/Constants/InitialState.ts";
 
 // format string to display in button and header
 const formatStatus = (status: string): string => {
@@ -11,20 +11,17 @@ const formatStatus = (status: string): string => {
 };
 
 // save todos to localStorage
-const setTodosState = (todos: StateProps): void => {
-    localStorage.setItem("todos", JSON.stringify(todos));
+const setTodosState = (todos: StateMap): void => {
+    const entries: TodoObj = Object.fromEntries(todos)
+    localStorage.setItem("todos", JSON.stringify(entries));
 };
 
 // get todos from localStorage
-const getTodosState = (): StateProps => {
+const getTodosState = (): StateMap => {
     const todos = localStorage.getItem("todos");
-    return todos ? JSON.parse(todos) : InitialState;
-};
-
-// get todos by status
-const getTodosByStatus = (state: StateProps, status: string): Todo[] => {
-    const todos = state[status as keyof StateProps] || [];
-    return [...todos];
+    if (!todos) return new Map(DefaultState);
+    const entries = JSON.parse(todos)
+    return new Map(Object.entries(entries));
 };
 
 // return new array with items swapped between source and destination index
@@ -37,8 +34,9 @@ const reorderItems = (todos: Todo[], sourceIndex: number, destinationIndex: numb
 };
 
 // check if to do state is empty
-const isTodosEmpty = (todos: StateProps): boolean => {
-    return Object.values(todos).every(t => t == null || t.length === 0);
+const isTodosEmpty = (todos: StateMap): boolean => {
+    const entries: TodoObj = Object.fromEntries(todos);
+    return Object.values(entries).every(t => t == null || t.length === 0);
 };
 
 // Check if a task is marked as done when it is previously not done
@@ -50,7 +48,6 @@ export {
     formatStatus,
     setTodosState,
     getTodosState,
-    getTodosByStatus,
     reorderItems,
     isTodosEmpty,
     isTaskDone

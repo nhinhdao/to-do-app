@@ -1,10 +1,10 @@
 import {createContext, Dispatch, useReducer} from "react";
-import {TodoActions, ChildrenProps, StateProps} from "../../atoms/Constants/Interfaces.ts";
+import {TodoActions, ChildrenProps, StateMap} from "../../atoms/Constants/Interfaces.ts";
 import {toDoReducer} from "../../store/TodoReducer.ts";
 import {getTodosState} from "../../utils/helpers.ts";
-import {InitialState} from "../../atoms/Constants/InitialState.ts";
+import {DefaultState} from "../../atoms/Constants/InitialState.ts";
 
-const TodoContext = createContext<StateProps>(InitialState);
+const TodoContext = createContext<StateMap>(DefaultState);
 const TodoDispatch = createContext<Dispatch<TodoActions> | null>(null);
 
 const TodoProvider = ({children}: ChildrenProps) => {

@@ -1,5 +1,5 @@
 import {useReward} from "react-rewards";
-import {StateProps, Todo} from "../../atoms/Constants/Interfaces.ts";
+import {StateMap, Todo} from "../../atoms/Constants/Interfaces.ts";
 import {STATUS} from "../../atoms/Constants/Status.ts";
 import {SimpleGrid} from "@mantine/core";
 import {ActionTypes} from "../../atoms/Constants/Actions.ts";
@@ -12,7 +12,7 @@ import {ConfettiConfig} from "../../atoms/Constants/ConfettiConfig.ts";
 import "./ToDoList.styles.css";
 
 const ToDoList = () => {
-    const data: StateProps = useTodos();
+    const data: StateMap = useTodos();
     const dispatch = useTodoDispatch();
     const {reward: confettiReward} = useReward('confettiReward', 'emoji', ConfettiConfig);
 
@@ -27,28 +27,23 @@ const ToDoList = () => {
         const sourceIndex: number = source.index;
         const sourceStatus: string = source.droppableId.replace("dnd-list-", "");
 
-        const destinationIndex = destination.index;
-        const destinationStatus = destination.droppableId.replace("dnd-list-", "");
+        const destinationIndex: number = destination.index;
+        const destinationStatus: string = destination.droppableId.replace("dnd-list-", "");
 
         // if nothing changes after dragging and dropping
-        if (source.droppableId === destination.droppableId && sourceIndex === destinationIndex) {
+        if (sourceStatus === destinationStatus && sourceIndex === destinationIndex) {
             return;
         }
 
-        const tempState = {
-            todo: [...data.todo],
-            doing: [...data.doing],
-            done: [...data.done]
-        };
-
-        const sourceCollection: Todo[] = tempState[sourceStatus as keyof StateProps];
+        const tempState = new Map(data);
+        const sourceCollection: Todo[] = tempState.get(sourceStatus) || [];
 
         if (sourceStatus === destinationStatus) {
-            tempState[sourceStatus as keyof StateProps] = reorderItems(sourceCollection, sourceIndex, destinationIndex);
+            tempState.set(sourceStatus, reorderItems(sourceCollection, sourceIndex, destinationIndex));
         }
         // handle drop across status section
         else {
-            const destinationCollection: Todo[] = tempState[destinationStatus as keyof StateProps];
+            const destinationCollection: Todo[] = tempState.get(destinationStatus) || [];
 
             // remove item from source list and set status
             const [sourceTodo]: Todo[] = sourceCollection.splice(sourceIndex, 1);
@@ -58,8 +53,8 @@ const ToDoList = () => {
             destinationCollection.splice(destinationIndex, 0, sourceTodo);
 
             // set collections to new state
-            tempState[sourceStatus as keyof StateProps] = sourceCollection;
-            tempState[destinationStatus as keyof StateProps] = destinationCollection;
+            tempState.set(sourceStatus, sourceCollection);
+            tempState.set(destinationStatus, destinationCollection);
         }
 
         if (dispatch != null) {
@@ -85,9 +80,9 @@ const ToDoList = () => {
                 cols={{ base: 1, sm: 1, lg: 3 }}
                 spacing={{ base: 10, sm: 'xl' }}
                 verticalSpacing={{ base: 'md', sm: 'xl' }}>
-                <ToDoSection key={STATUS.Todo} status={STATUS.Todo} items={data.todo}/>
-                <ToDoSection key={STATUS.Doing} status={STATUS.Doing} items={data.doing}/>
-                <ToDoSection key={STATUS.Done} status={STATUS.Done} items={data.done}/>
+                <ToDoSection key={STATUS.Todo} status={STATUS.Todo} items={data.get(STATUS.Todo)}/>
+                <ToDoSection key={STATUS.Doing} status={STATUS.Doing} items={data.get(STATUS.Doing)}/>
+                <ToDoSection key={STATUS.Done} status={STATUS.Done} items={data.get(STATUS.Done)}/>
             </SimpleGrid>
         </DragDropContext>
     );
